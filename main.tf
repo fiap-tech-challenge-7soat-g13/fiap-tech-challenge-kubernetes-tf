@@ -148,6 +148,10 @@ resource "helm_release" "istio_ingressgateway" {
   repository = "https://istio-release.storage.googleapis.com/charts"
   chart      = "gateway"
   namespace  = kubernetes_namespace.istio_ingress.metadata.0.name
+  set {
+    name  = "service.annotations.service\\.beta\\.kubernetes\\.io/aws-load-balancer-type"
+    value = "nlb"
+  }
   depends_on = [helm_release.istiod]
 }
 resource "kubernetes_labels" "istio_injection" {
